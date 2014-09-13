@@ -1,0 +1,30 @@
+{
+	"name"        : "henderjon/cleverservicewrapper",
+	"type"        : "library",
+	"description" : "an injectable wrapper for Clever's PHP SDK",
+	"homepage"    : "https://github.com/henderjon/cleverservicewrapper",
+	"license"     : "BSD-3-Clause",
+	"authors"     : [
+		{
+			"name"     : "Jon Henderson",
+			"role"     : "Developer",
+			"homepage" : "http://github.com/henderjon"
+		}
+	],
+	"support" : {
+		"irc" : "irc://irc.freenode.org/henderjon"
+	},
+	"require": {
+		"php"           : "~5.4",
+		"clever/clever" : "~0.3",
+		"psr/log"       : "~1.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit" : "~4.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Clever\\": "src/"
+		}
+	}
+}
