@@ -35,7 +35,7 @@ if(!$district){
 $params = ["limit" => 50];
 while( $events = $clever->ping( $district, "events", $params ) ) {
 	foreach($events as $event){
-		$params = ["starting_after" => $event->id];
+		$params["starting_after"] = $event->id];
 		echo "{$event->id} -> {$event->type}\n";
 	}
 }
