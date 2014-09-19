@@ -57,13 +57,17 @@ class ServiceWrapper implements ServiceWrapperInterface {
 			try{
 				return call_user_func([$object, $endpoint], $query);
 			}catch(\CleverError $e){
-				if($logger InstanceOf Log\LoggerInterface){
+				if($this->logger InstanceOf Log\LoggerInterface){
 					$this->logger->alert(get_class($e), [
 						"e.errno"          => $e->getCode(),
 						"e.error"          => $e->getMessage(),
 						"e.httpstatus"     => $e->getHttpStatus(),
 						"e.httpbody"       => $e->getHttpBody(),
 						"e.jsonbody"       => $e->getJsonBody(),
+						"e.file"           => $this->getPath($e),
+						"e.line"           => $e->getLine(),
+						"lib.version"      => \Clever::VERSION,
+						"lib.apibase"      => \Clever::$apiBase,
 						"request.object"   => json_encode([get_class($object) => $object->id]),
 						"request.endpoint" => $endpoint,
 						"request.query"    => json_encode($query),
@@ -88,7 +92,16 @@ class ServiceWrapper implements ServiceWrapperInterface {
 		}
 	}
 
-	function shouldBreak(\CleverError $e){
+	protected function getPath(\CleverError $e){
+		// assuming that Clever was installed via composer
+		$basePath = "vendor" . DIRECTORY_SEPARATOR;
+		if(($pos = strpos($e->getFile(),  $basePath)) !== false){
+			return substr($e->getFile(), $pos);
+		}
+		return basename($path);
+	}
+
+	protected function shouldBreak(\CleverError $e){
 		return in_array($e->getHttpStatus(), $this->breakStatuses);
 	}
 
