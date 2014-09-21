@@ -72,10 +72,10 @@ class ServiceWrapper implements ServiceWrapperInterface {
 						"request.endpoint" => $endpoint,
 						"request.query"    => $query,
 						"request.token"    => $this->token,
-						"timestamp"        => date("c (e)"),
-						"sleep"            => $this->sleep,
-						"interval"         => $this->interval,
-						"iteration"        => $iteration,
+						"loop.timestamp"   => date("c (e)"),
+						"loop.sleep"       => $this->sleep,
+						"loop.interval"    => $this->interval,
+						"loop.iteration"   => $iteration,
 					]);
 				}
 

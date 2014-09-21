@@ -8,7 +8,11 @@ class ServiceLogger extends Log\AbstractLogger {
 
 	function log($level, $message, array $context = []){
 
-		$context = ["level" => strtoupper($level), "message" => $message, "timestamp" => date("c (e)")] + $context;
+		$context = [
+			"log.level" => strtoupper($level),
+			"log.message" => $message,
+			"log.timestamp" => date("c (e)")
+		] + $context;
 
 		$len = 0;
 		foreach($context as $key => $value){
