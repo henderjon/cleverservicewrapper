@@ -3,7 +3,7 @@
 require "vendor/autoload.php";
 
 $clever   = new \Clever\ServiceWrapper("DEMO_TOKEN", new \Clever\ServiceLogger);
-$district = $clever->getCleverDistrict("4fd43cc56d11340000000005"); // mess wtih this value to see the output
+$district = $clever->getCleverDistrict("4fd43cc56d11340000000005"); // mess with this value to see the output
 
 if(!$district){
 	exit(1);
