@@ -77,4 +77,21 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($id, $result->id);
 	}
 
+	/**
+	 * @expectedException Clever\ServiceWrapperException
+	 */
+	function test_ServiceWrapperException(){
+		$inst = $this->getService();
+		$inst->setToken("DEMO_TOKEN");
+		$inst->setRetries(1);
+		$inst->setInterval(0);
+
+		$id = "4fd43cc56d11340000000005";
+
+		$dist = $inst->getCleverDistrict($id);
+
+		$result = $inst->ping($dist, "events", ["starting_after" => "4fd43cc56d11340000000005", "page" => "2"]);
+
+	}
+
 }

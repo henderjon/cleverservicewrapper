@@ -111,7 +111,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 		if(($pos = strpos($e->getFile(),  $basePath)) !== false){
 			return substr($e->getFile(), $pos);
 		}
-		return basename($path);
+		return basename($e->getFile());
 	}
 
 	/**
