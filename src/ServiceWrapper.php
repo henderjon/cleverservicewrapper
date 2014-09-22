@@ -34,7 +34,12 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	protected $breakStatuses = [404];
 
 	/**
+	 * create a new ServiceWrapper instance
 	 *
+	 * @param string $token The auth token for a given district
+	 * @param Log\LoggerInterface $logger A place to log errors
+	 * @param int $interval The number of seconds to add to sleep() after each failure
+	 * @param int $retries The number of times to retry an individual call
 	 */
 	function __construct($token, Log\LoggerInterface $logger = null, $interval = 1, $retries = 100){
 
@@ -46,10 +51,14 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * ping clever
+	 * ping the Clever API for a given object/endpoint/query and evaluate the response. If an
+	 * error is thrown from the Clever PHP SDK, log it, decide to retry using an exponential
+	 * backoff of +1 second (by default) for up to 100 retries (by default).
 	 *
-	 * @param string $path The path to the csv
-	 * @return SplFileObject
+	 * @param CleverObject $object An instance of a CleverObject
+	 * @param string $endpoint The endpoint/method to call on the provided CleverObject
+	 * @param array $query Query params to pass to that method based on Clever's API docs
+	 * @return \CleverObject
 	 */
 	function ping(\CleverObject $object, $endpoint, array $query = []) {
 		$iteration = 0;
@@ -92,6 +101,10 @@ class ServiceWrapper implements ServiceWrapperInterface {
 		}
 	}
 
+	/**
+	 * hide the full file system path in case the logger spits out data to the
+	 * public
+	 */
 	protected function getPath(\CleverError $e){
 		// assuming that Clever was installed via composer
 		$basePath = "vendor" . DIRECTORY_SEPARATOR;
@@ -101,12 +114,21 @@ class ServiceWrapper implements ServiceWrapperInterface {
 		return basename($path);
 	}
 
+	/**
+	 * decide if the http status should break the loop.
+	 *
+	 * In some cases (e.g. a 404 error) the requested resource isn't there
+	 * and won't be there. Asking once or asking 5 million times won't change
+	 * that response. In those instances, break the loop (having logged the error)
+	 * and move on.
+	 */
 	protected function shouldBreak(\CleverError $e){
 		return in_array($e->getHttpStatus(), $this->breakStatuses);
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverDistrict object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverDistrict($id){
 		return $this->ping(new \CleverDistrict($id), "refresh");
@@ -114,7 +136,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverSchool object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverSchool($id){
 		return $this->ping(new \CleverSchool($id), "refresh");
@@ -122,7 +145,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverStudent object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverStudent($id){
 		return $this->ping(new \CleverStudent($id), "refresh");
@@ -130,7 +154,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverSection object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverSection($id){
 		return $this->ping(new \CleverSection($id), "refresh");
@@ -138,7 +163,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverTeacher object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverTeacher($id){
 		return $this->ping(new \CleverTeacher($id), "refresh");
@@ -146,7 +172,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get the clever object for that ID
+	 * get the CleverEvent object for that ID. Using "refresh" allows initial object
+	 * calls to pass through ping.
 	 */
 	function getCleverEvent($id){
 		return $this->ping(new \CleverEvent($id), "refresh");
@@ -154,7 +181,8 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * get a generic clever object for testing
+	 * get a generic CleverObject for testing, __GET, __SET lets us use
+	 * this as a mock if we want.
 	 */
 	function getCleverObject(){
 		return new \CleverObject;
@@ -162,21 +190,21 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
-	 * setters for use in testing/injecting
+	 * set/change the token after the fact
 	 */
 	function setToken($token){
 		\Clever::setToken(($this->token = $token));
 	}
 
 	/**
-	 * setters for use in testing/injecting
+	 * set/change the interval after the fact
 	 */
 	function setInterval($interval){
 		$this->interval = $interval;
 	}
 
 	/**
-	 * setters for use in testing/injecting
+	 * set/change the number of retries after the fact
 	 */
 	function setRetries($retries){
 		$this->retries = $retries;
