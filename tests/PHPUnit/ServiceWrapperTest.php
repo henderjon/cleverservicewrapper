@@ -55,17 +55,6 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($id, $result->id);
 	}
 
-	function test_getCleverEvent(){
-		$inst = $this->getService();
-
-		$id = "53ff6e6b322eced002000088";
-
-		$result = $inst->getCleverEvent($id);
-
-		$this->assertInstanceOf("\\CleverEvent", $result);
-		$this->assertEquals($id, $result->id);
-	}
-
 	function test_getCleverSection(){
 		$inst = $this->getService();
 
@@ -74,6 +63,17 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$result = $inst->getCleverSection($id);
 
 		$this->assertInstanceOf("\\CleverSection", $result);
+		$this->assertEquals($id, $result->id);
+	}
+
+	function test_getCleverEvent(){
+		$inst = $this->getService();
+
+		$id = "53ff6e6b322eced002000088";
+
+		$result = $inst->getCleverEvent($id);
+
+		$this->assertInstanceOf("\\CleverEvent", $result);
 		$this->assertEquals($id, $result->id);
 	}
 
