@@ -10,7 +10,7 @@ class ServiceLoggerTest extends PHPUnit_Framework_TestCase {
 		$logger->alert("five", [555, true, null, false]);
 		$result = ob_get_clean();
 
-		$expected =  "\n\n------------------------------------------------------------------------\n\n";
+		$expected = "\n\n" . str_repeat("-", 72) . "\n\n";
 		$expected .= "    log.level => string  => \"ALERT\"\n";
 		$expected .= "  log.message => string  => \"five\"\n";
 		$expected .= "log.timestamp => string  => \"".date("c (e)")."\"\n";
