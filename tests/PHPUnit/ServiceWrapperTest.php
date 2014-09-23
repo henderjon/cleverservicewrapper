@@ -126,9 +126,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$id = "4fd43cc56d11340000000005a";
 
-		ob_start();
 		$dist = $inst->getCleverDistrict($id);
-		$result = ob_get_clean();
 
 		$expected = [
 			"e.errno"          => 0,
@@ -152,7 +150,9 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 			"log.message"      => "CleverInvalidRequestError",
 		];
 
-		$this->assertEquals($expected, $logger->getContext());
+		$result = $logger->getContext();
+
+		$this->assertEquals($expected, $result);
 
 	}
 
