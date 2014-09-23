@@ -13,3 +13,6 @@ go wrong.
 
 The official SDK is only at version 0.3 so keep in mind that until they
 tag a stable version, it's wide open to change and breakage.
+
+[![Latest Stable Version](https://poser.pugx.org/henderjon/cleverservicewrapper/v/stable.svg)](https://packagist.org/packages/henderjon/cleverservicewrapper)
+[![Build Status](https://travis-ci.org/henderjon/cleverservicewrapper.svg?branch=master)](https://travis-ci.org/henderjon/cleverservicewrapper)
