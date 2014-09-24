@@ -130,12 +130,12 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$expected = [
 			"e.errno"          => 0,
-			"e.error"          => null,
+			"e.error"          => "",
 			"e.httpstatus"     => 404,
 			"e.httpbody"       => "Not Found",
 			"e.jsonbody"       => null,
 			"e.file"           => "vendor/clever/clever/lib/Clever/ApiRequestor.php",
-			"e.line"           => 68,
+			"e.line"           => 66,
 			"lib.version"      => \Clever::VERSION,
 			"lib.apibase"      => \Clever::$apiBase,
 			"request.object"   => ["CleverDistrict" => $id],
