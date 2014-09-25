@@ -100,12 +100,25 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(null, $dist);
 	}
 
+	function test___invoke(){
+		$inst = $this->getService();
+
+		$id = "4fd43cc56d11340000000005";
+
+		$dist = $inst->getCleverDistrict($id);
+
+		$result = $inst($dist, "events", ["starting_after" => "4fd43cc56d11340000000005", "limit" => "1"]);
+
+		$this->assertEquals(1, count($result));
+
+	}
+
 	/**
 	 * @expectedException Clever\ServiceWrapperException
 	 */
 	function test_ServiceWrapperException(){
 		$inst = $this->getService();
-		$inst->setToken("DEMO_TOKEN");
+		$inst->setToken("DEMO_TOKEN"); // coverage
 		$inst->setRetries(2); // test the sleep()
 		$inst->setInterval(0);
 

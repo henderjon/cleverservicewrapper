@@ -51,6 +51,13 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	}
 
 	/**
+	 * alias ping by making the Wrapper callable
+	 */
+	function __invoke(\CleverObject $object, $endpoint, array $query = []){
+		return $this->ping($object, $endpoint, $query);
+	}
+
+	/**
 	 * ping the Clever API for a given object/endpoint/query and evaluate the response. If an
 	 * error is thrown from the Clever PHP SDK, log it, decide to retry using an exponential
 	 * backoff of +1 second (by default) for up to 100 retries (by default).
