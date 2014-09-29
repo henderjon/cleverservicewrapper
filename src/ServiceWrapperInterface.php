@@ -15,7 +15,7 @@ interface ServiceWrapperInterface {
 	 * @param string $path The path to the csv
 	 * @return SplFileObject
 	 */
-	function ping(\CleverObject $object, $endpoint, array $query = []);
+	function ping(\CleverObject $object, $endpoint, array $query = array());
 
 	/**
 	 * get the clever object for that ID

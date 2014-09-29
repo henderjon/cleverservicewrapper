@@ -31,7 +31,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	/**
 	 * HTTP Statuses that break the retry loop
 	 */
-	protected $breakStatuses = [404];
+	protected $breakStatuses = array(404);
 
 	/**
 	 * create a new ServiceWrapper instance
@@ -53,7 +53,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	/**
 	 * alias ping by making the Wrapper callable
 	 */
-	function __invoke(\CleverObject $object, $endpoint, array $query = []){
+	function __invoke(\CleverObject $object, $endpoint, array $query = array()){
 		return $this->ping($object, $endpoint, $query);
 	}
 
@@ -67,14 +67,14 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	 * @param array $query Query params to pass to that method based on Clever's API docs
 	 * @return \CleverObject
 	 */
-	function ping(\CleverObject $object, $endpoint, array $query = []) {
+	function ping(\CleverObject $object, $endpoint, array $query = array()) {
 		$iteration = 0;
 		while($iteration += 1){
 			try{
-				return call_user_func([$object, $endpoint], $query);
+				return call_user_func(array($object, $endpoint), $query);
 			}catch(\CleverError $e){
 				if($this->logger InstanceOf Log\LoggerInterface){
-					$this->logger->alert(get_class($e), [
+					$this->logger->alert(get_class($e), array(
 						"e.errno"          => $e->getCode(),
 						"e.error"          => $e->getMessage(),
 						"e.httpstatus"     => $e->getHttpStatus(),
@@ -84,7 +84,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 						"e.line"           => $e->getLine(),
 						"lib.version"      => \Clever::VERSION,
 						"lib.apibase"      => \Clever::$apiBase,
-						"request.object"   => [get_class($object) => $object->id],
+						"request.object"   => array(get_class($object) => $object->id),
 						"request.endpoint" => $endpoint,
 						"request.query"    => $query,
 						"request.token"    => $this->token,
@@ -92,7 +92,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 						"loop.sleep"       => $this->sleep,
 						"loop.interval"    => $this->interval,
 						"loop.iteration"   => $iteration,
-					]);
+					));
 				}
 
 				if($this->shouldBreak($e)){

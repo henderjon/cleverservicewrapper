@@ -6,13 +6,13 @@ use \Psr\Log;
 
 class ServiceLogger extends Log\AbstractLogger {
 
-	function log($level, $message, array $context = []){
+	function log($level, $message, array $context = array()){
 
-		$context = [
+		$context = array(
 			"log.level"     => strtoupper($level),
 			"log.message"   => $message,
 			"log.timestamp" => date("c (e)"),
-		] + $context;
+		) + $context;
 
 		$len = 0;
 		foreach($context as $key => $value){
