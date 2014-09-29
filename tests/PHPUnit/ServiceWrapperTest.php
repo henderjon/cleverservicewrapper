@@ -1,8 +1,10 @@
 <?php
 
-class NoOutPutLogger extends \Psr\Log\AbstractLogger {
+use Psr\Log;
+
+class NoOutPutLogger extends Log\AbstractLogger {
 	protected $context;
-	function log($level, $message, array $context = array()){
+	function log($level, $message, array $context = []){
 		$context["log.level"]   = $level;
 		$context["log.message"] = $message;
 		$this->context = $context;
@@ -124,7 +126,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dist = $inst->getCleverDistrict($id);
 
-		$result = $inst->ping($dist, "events", array("starting_after" => "4fd43cc56d11340000000005", "page" => "2"));
+		$result = $inst->ping($dist, "events", ["starting_after" => "4fd43cc56d11340000000005", "page" => "2"]);
 
 	}
 
@@ -139,7 +141,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dist = $inst->getCleverDistrict($id);
 
-		$expected = array(
+		$expected = [
 			"e.errno"          => 0,
 			"e.error"          => "",
 			"e.httpstatus"     => 404,
@@ -149,9 +151,9 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 			"e.line"           => 66,
 			"lib.version"      => \Clever::VERSION,
 			"lib.apibase"      => \Clever::$apiBase,
-			"request.object"   => array("CleverDistrict" => $id),
+			"request.object"   => ["CleverDistrict" => $id],
 			"request.endpoint" => "refresh",
-			"request.query"    => array(),
+			"request.query"    => [],
 			"request.token"    => "DEMO_TOKEN",
 			"loop.timestamp"   => date("c (e)"),
 			"loop.sleep"       => 1,
@@ -159,7 +161,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 			"loop.iteration"   => 1,
 			"log.level"        => "alert",
 			"log.message"      => "CleverInvalidRequestError",
-		);
+		];
 
 		$result = $logger->getContext();
 

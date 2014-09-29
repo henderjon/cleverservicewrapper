@@ -2,9 +2,11 @@
 
 namespace Clever;
 
+use \Psr\Log;
+
 class ServiceWrapper implements ServiceWrapperInterface {
 
-	protected $logger;
+	use Log\LoggerAwareTrait;
 
 	/**
 	 * how many retires are we going to allow
@@ -29,17 +31,17 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	/**
 	 * HTTP Statuses that break the retry loop
 	 */
-	protected $breakStatuses = array(404);
+	protected $breakStatuses = [404];
 
 	/**
 	 * create a new ServiceWrapper instance
 	 *
 	 * @param string $token The auth token for a given district
-	 * @param \Psr\Log\LoggerInterface $logger A place to log errors
+	 * @param Log\LoggerInterface $logger A place to log errors
 	 * @param int $interval The number of seconds to add to sleep() after each failure
 	 * @param int $retries The number of times to retry an individual call
 	 */
-	function __construct($token, \Psr\Log\LoggerInterface $logger = null, $interval = 1, $retries = 100){
+	function __construct($token, Log\LoggerInterface $logger = null, $interval = 1, $retries = 100){
 
 		\Clever::setToken(($this->token = $token));
 
@@ -51,13 +53,9 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	/**
 	 * alias ping by making the Wrapper callable
 	 */
-	function __invoke(\CleverObject $object, $endpoint, array $query = array()){
+	function __invoke(\CleverObject $object, $endpoint, array $query = []){
 		return $this->ping($object, $endpoint, $query);
 	}
-
-    public function setLogger(\Psr\Log\LoggerInterface $logger){
-        $this->logger = $logger;
-    }
 
 	/**
 	 * ping the Clever API for a given object/endpoint/query and evaluate the response. If an
@@ -69,14 +67,14 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	 * @param array $query Query params to pass to that method based on Clever's API docs
 	 * @return \CleverObject
 	 */
-	function ping(\CleverObject $object, $endpoint, array $query = array()) {
+	function ping(\CleverObject $object, $endpoint, array $query = []) {
 		$iteration = 0;
 		while($iteration += 1){
 			try{
-				return call_user_func(array($object, $endpoint), $query);
+				return call_user_func([$object, $endpoint], $query);
 			}catch(\CleverError $e){
-				if($this->logger InstanceOf \Psr\Log\LoggerInterface){
-					$this->logger->alert(get_class($e), array(
+				if($this->logger InstanceOf Log\LoggerInterface){
+					$this->logger->alert(get_class($e), [
 						"e.errno"          => $e->getCode(),
 						"e.error"          => $e->getMessage(),
 						"e.httpstatus"     => $e->getHttpStatus(),
@@ -86,7 +84,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 						"e.line"           => $e->getLine(),
 						"lib.version"      => \Clever::VERSION,
 						"lib.apibase"      => \Clever::$apiBase,
-						"request.object"   => array(get_class($object) => $object->id),
+						"request.object"   => [get_class($object) => $object->id],
 						"request.endpoint" => $endpoint,
 						"request.query"    => $query,
 						"request.token"    => $this->token,
@@ -94,7 +92,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 						"loop.sleep"       => $this->sleep,
 						"loop.interval"    => $this->interval,
 						"loop.iteration"   => $iteration,
-					));
+					]);
 				}
 
 				if($this->shouldBreak($e)){

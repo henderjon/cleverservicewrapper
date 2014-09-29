@@ -2,15 +2,17 @@
 
 namespace Clever;
 
-class ServiceLogger extends \Psr\Log\AbstractLogger {
+use \Psr\Log;
 
-	function log($level, $message, array $context = array()){
+class ServiceLogger extends Log\AbstractLogger {
 
-		$context = array(
+	function log($level, $message, array $context = []){
+
+		$context = [
 			"log.level"     => strtoupper($level),
 			"log.message"   => $message,
 			"log.timestamp" => date("c (e)"),
-		) + $context;
+		] + $context;
 
 		$len = 0;
 		foreach($context as $key => $value){

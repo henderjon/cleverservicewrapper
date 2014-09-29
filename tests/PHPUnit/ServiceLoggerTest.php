@@ -7,7 +7,7 @@ class ServiceLoggerTest extends PHPUnit_Framework_TestCase {
 		$logger = new \Clever\ServiceLogger;
 
 		ob_start();
-		$logger->alert("five", array(555, true, null, false));
+		$logger->alert("five", [555, true, null, false]);
 		$result = ob_get_clean();
 
 		$expected = "\n\n" . str_repeat("-", 72) . "\n\n";
