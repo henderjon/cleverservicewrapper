@@ -14,5 +14,8 @@ go wrong.
 The official SDK is only at version 0.3 so keep in mind that until they
 tag a stable version, it's wide open to change and breakage.
 
+Due to some compatibility issues, v0.x.x will remain compatible with PHP 5.3 and v1.x.x
+will pick up at PHP >=5.4.
+
 [![Latest Stable Version](https://poser.pugx.org/henderjon/cleverservicewrapper/v/stable.svg)](https://packagist.org/packages/henderjon/cleverservicewrapper)
 [![Build Status](https://travis-ci.org/henderjon/cleverservicewrapper.svg?branch=master)](https://travis-ci.org/henderjon/cleverservicewrapper)
