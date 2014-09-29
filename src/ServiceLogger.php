@@ -2,9 +2,7 @@
 
 namespace Clever;
 
-use \Psr\Log;
-
-class ServiceLogger extends Log\AbstractLogger {
+class ServiceLogger extends \Psr\Log\AbstractLogger {
 
 	function log($level, $message, array $context = array()){
 

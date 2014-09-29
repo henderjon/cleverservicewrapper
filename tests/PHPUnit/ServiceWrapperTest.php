@@ -1,8 +1,6 @@
 <?php
 
-use Psr\Log;
-
-class NoOutPutLogger extends Log\AbstractLogger {
+class NoOutPutLogger extends \Psr\Log\AbstractLogger {
 	protected $context;
 	function log($level, $message, array $context = array()){
 		$context["log.level"]   = $level;

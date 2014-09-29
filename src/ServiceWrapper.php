@@ -2,11 +2,9 @@
 
 namespace Clever;
 
-use \Psr\Log;
-
 class ServiceWrapper implements ServiceWrapperInterface {
 
-	use Log\LoggerAwareTrait;
+	protected $logger;
 
 	/**
 	 * how many retires are we going to allow
@@ -37,11 +35,11 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	 * create a new ServiceWrapper instance
 	 *
 	 * @param string $token The auth token for a given district
-	 * @param Log\LoggerInterface $logger A place to log errors
+	 * @param \Psr\Log\LoggerInterface $logger A place to log errors
 	 * @param int $interval The number of seconds to add to sleep() after each failure
 	 * @param int $retries The number of times to retry an individual call
 	 */
-	function __construct($token, Log\LoggerInterface $logger = null, $interval = 1, $retries = 100){
+	function __construct($token, \Psr\Log\LoggerInterface $logger = null, $interval = 1, $retries = 100){
 
 		\Clever::setToken(($this->token = $token));
 
@@ -56,6 +54,10 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	function __invoke(\CleverObject $object, $endpoint, array $query = array()){
 		return $this->ping($object, $endpoint, $query);
 	}
+
+    public function setLogger(\Psr\Log\LoggerInterface $logger){
+        $this->logger = $logger;
+    }
 
 	/**
 	 * ping the Clever API for a given object/endpoint/query and evaluate the response. If an
@@ -73,7 +75,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 			try{
 				return call_user_func(array($object, $endpoint), $query);
 			}catch(\CleverError $e){
-				if($this->logger InstanceOf Log\LoggerInterface){
+				if($this->logger InstanceOf \Psr\Log\LoggerInterface){
 					$this->logger->alert(get_class($e), array(
 						"e.errno"          => $e->getCode(),
 						"e.error"          => $e->getMessage(),
