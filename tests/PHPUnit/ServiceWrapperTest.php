@@ -141,7 +141,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dist = $inst->getCleverDistrict($id);
 
-		$expected = [
+		$expected = array(
 			"e.errno"          => 0,
 			"e.error"          => "",
 			"e.httpstatus"     => 404,
@@ -161,7 +161,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 			"loop.iteration"   => 1,
 			"log.level"        => "alert",
 			"log.message"      => "CleverInvalidRequestError",
-		];
+		);
 
 		$result = $logger->getContext();
 
