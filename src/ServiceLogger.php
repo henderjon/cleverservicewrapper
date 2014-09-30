@@ -20,7 +20,7 @@ class ServiceLogger extends \Psr\Log\AbstractLogger {
 		$output = "\n\n" . str_repeat("-", 72) . "\n\n";
 
 		foreach($context as $key => $value){
-			$output .= sprintf("%{$len}s => %-7s => %s\n", $key, gettype($value), json_encode($value));
+			$output .= sprintf("%{$len}s ... %-7s ... %s\n", $key, gettype($value), json_encode($value));
 		}
 
 		$output .= "\n\n\n";
