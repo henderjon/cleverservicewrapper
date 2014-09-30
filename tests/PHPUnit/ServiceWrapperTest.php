@@ -167,5 +167,7 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	// more coverage in version >= 1.0
+
 }
 
