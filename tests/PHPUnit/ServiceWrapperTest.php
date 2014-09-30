@@ -78,6 +78,9 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($id, $result->id);
 	}
 
+	/**
+	 * events come and go, this test doesn't always work
+	 */
 	// function test_getCleverEvent(){
 	// 	$inst = $this->getService();
 
@@ -100,18 +103,18 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(null, $dist);
 	}
 
-	// function test___invoke(){
-	// 	$inst = $this->getService();
+	function test___invoke(){
+		$inst = $this->getService();
 
-	// 	$id = "4fd43cc56d11340000000005";
+		$id = "4fd43cc56d11340000000005";
 
-	// 	$dist = $inst->getCleverDistrict($id);
+		$dist = $inst->getCleverDistrict($id);
 
-	// 	$result = $inst($dist, "events", array("starting_after" => "4fd43cc56d11340000000005", "limit" => "1"));
+		$result = $inst($dist, "schools", array("limit" => "1"));
 
-	// 	$this->assertEquals(1, count($result));
+		$this->assertEquals(1, count($result));
 
-	// }
+	}
 
 	/**
 	 * @expectedException Clever\ServiceWrapperException
@@ -130,8 +133,14 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 	}
 
-	function test_logging(){
+	function test_logging_looping(){
 		$inst = $this->getService();
+
+		$prop = new \ReflectionProperty($inst, "breakStatuses");
+		$prop->setAccessible(true);
+		$prop->setValue($inst, []);
+
+		$inst->setRetries(3);
 
 		$logger = new NoOutPutLogger;
 
@@ -139,7 +148,11 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$id = "4fd43cc56d11340000000005a";
 
-		$dist = $inst->getCleverDistrict($id);
+		try{
+			$dist = $inst->getCleverDistrict($id);
+		}catch(\Clever\ServiceWrapperException $e){
+			// do nothing, we're inspecting the logger output
+		}
 
 		$expected = [
 			"e.errno"          => 0,
@@ -156,9 +169,9 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 			"request.query"    => [],
 			"request.token"    => "DEMO_TOKEN",
 			"loop.timestamp"   => date("c (e)"),
-			"loop.sleep"       => 1,
+			"loop.sleep"       => 3, // sleep is added to AFTER the log is generated which is why it's -1 from what you might expect
 			"loop.interval"    => 1,
-			"loop.iteration"   => 1,
+			"loop.iteration"   => 3,
 			"log.level"        => "alert",
 			"log.message"      => "CleverInvalidRequestError",
 		];
@@ -166,6 +179,44 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$result = $logger->getContext();
 
 		$this->assertEquals($expected, $result);
+
+	}
+
+	function test_sleep_reseting(){
+		$inst = $this->getService();
+
+		$prop = new \ReflectionProperty($inst, "breakStatuses");
+		$prop->setAccessible(true);
+		$prop->setValue($inst, []);
+
+		$inst->setRetries(3);
+
+		$logger = new NoOutPutLogger;
+
+		$inst->setLogger($logger);
+
+		$id = "4fd43cc56d11340000000005a";
+
+		try{
+			$dist = $inst->getCleverDistrict($id);
+		}catch(\Clever\ServiceWrapperException $e){
+			// do nothing, we're inspecting the logger output
+		}
+
+		$result = $logger->getContext();
+
+		$this->assertEquals(3, $result["loop.sleep"]);
+		$this->assertEquals(3, $result["loop.iteration"]);
+
+		// test the second loop -- make sure the sleep reset
+		$prop->setValue($inst, [404]);
+
+		$dist = $inst->getCleverDistrict($id);
+
+		$result = $logger->getContext();
+
+		$this->assertEquals(1, $result["loop.sleep"]);
+		$this->assertEquals(1, $result["loop.iteration"]);
 
 	}
 
