@@ -68,7 +68,7 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	 * @return \CleverObject
 	 */
 	function ping(\CleverObject $object, $endpoint, array $query = []) {
-		$iteration = 0;
+		$iteration = $this->sleep = 0;
 		while($iteration += 1){
 			try{
 				return call_user_func([$object, $endpoint], $query);
