@@ -218,4 +218,68 @@ class ServiceWrapper implements ServiceWrapperInterface {
 		$this->retries = $retries;
 	}
 
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const DISTRICT = "district";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const SCHOOLS = "schools";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const SCHOOL = "school";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const TEACHERS = "teachers";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const TEACHER = "teacher";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const STUDENTS = "students";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const SECTIONS = "sections";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const EVENTS = "events";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 * CURRENTLY NOT AN OBJECT IN CLEVER-PHP
+	 */
+	// const ADMINS = "admins";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 * CURRENTLY NOT AN OBJECT IN CLEVER-PHP
+	 */
+	// const STATUS = "status";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 * CURRENTLY NOT AN OBJECT IN CLEVER-PHP
+	 */
+	// const GRADELEVELS = "grade_levels";
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 * CURRENTLY NOT AN OBJECT IN CLEVER-PHP
+	 */
+	// const CONTACTS = "contacts";
+
 }

@@ -10,10 +10,10 @@ if(!$district){
 }
 
 $params["limit"] = 2;
-while( $events = $clever->ping( $district, "events", $params ) ) {
-	foreach($events as $event){
-		$params["starting_after"] = $event->id;
-		echo "{$event->id} -> {$event->type}\n";
+while( $schools = $clever( $district, $clever::SCHOOLS, $params ) ) {
+	foreach($schools as $school){
+		$params["starting_after"] = $school->id;
+		echo "{$school->id} -> {$school->name}\n";
 	}
 }
 

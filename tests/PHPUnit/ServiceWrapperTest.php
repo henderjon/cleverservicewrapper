@@ -220,5 +220,120 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	function test_endpoint_schools(){
+		$inst = $this->getService();
+
+		$id = "4fd43cc56d11340000000005";
+
+		$district = $inst->getCleverDistrict($id);
+
+		$schools = $inst($district, $inst::SCHOOLS);
+
+		$this->assertInternalType("array", $schools);
+		$this->assertInstanceOf("\\CleverSchool", reset($schools));
+	}
+
+	function test_endpoint_teachers(){
+		$inst = $this->getService();
+
+		$id = "4fd43cc56d11340000000005";
+
+		$district = $inst->getCleverDistrict($id);
+
+		$teachers = $inst($district, $inst::TEACHERS);
+
+		$this->assertInternalType("array", $teachers);
+		$this->assertInstanceOf("\\CleverTeacher", reset($teachers));
+	}
+
+	function test_endpoint_students(){
+		$inst = $this->getService();
+
+		$id = "4fd43cc56d11340000000005";
+
+		$district = $inst->getCleverDistrict($id);
+
+		$students = $inst($district, $inst::STUDENTS);
+
+		$this->assertInternalType("array", $students);
+		$this->assertInstanceOf("\\CleverStudent", reset($students));
+	}
+
+	function test_endpoint_sections(){
+		$inst = $this->getService();
+
+		$id = "4fd43cc56d11340000000005";
+
+		$district = $inst->getCleverDistrict($id);
+
+		$sections = $inst($district, $inst::SECTIONS);
+
+		$this->assertInternalType("array", $sections);
+		$this->assertInstanceOf("\\CleverSection", reset($sections));
+	}
+
+	// function test_endpoint_district(){
+	// 	$inst = $this->getService();
+
+	// 	$id = "530e595026403103360ff9fd";
+
+	// 	$school = $inst->getCleverSchool($id);
+
+	// 	$district = $inst($school, $inst::DISTRICT);
+
+	// 	$this->assertInstanceOf("\\CleverDistrict", $district);
+	// }
+
+	// function test_endpoint_school(){}
+
+	// function test_endpoint_school(){
+	// 	$inst = $this->getService();
+
+	// 	$id = "530e5979049e75a9262d0af2";
+
+	// 	$section = $inst->getCleverSection($id);
+
+	// 	$school = $inst($section, $inst::SCHOOL);
+
+	// 	$this->assertInstanceOf("\\CleverSchool", $school);
+	// }
+
+	// function test_endpoint_teacher(){
+	// 	$inst = $this->getService();
+
+	// 	$id = "530e5979049e75a9262d0af2";
+
+	// 	$section = $inst->getCleverSection($id);
+
+	// 	$teacher = $inst($section, $inst::TEACHER);
+
+	// 	$this->assertInstanceOf("\\CleverTeacher", $teacher);
+	// }
+
+	/**
+	 * changes too often to depend on it
+	 */
+	// function test_endpoint_events(){}
+
+	/**
+	 * not implemented
+	 */
+	// function test_endpoint_admins(){}
+
+	/**
+	 * not implemented
+	 */
+	// function test_endpoint_status(){}
+
+	/**
+	 * not implemented
+	 */
+	// function test_endpoint_grade_levels(){}
+
+	/**
+	 * not implemented
+	 */
+	// function test_endpoint_contacts(){}
+
 }
 
