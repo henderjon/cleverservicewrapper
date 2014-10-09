@@ -135,11 +135,11 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 
 	function test___toString(){
 		$info = [
-			"lib.retries"    => 100,
-			"lib.interval"   => 1,
-			"lib.token"      => "DEMO_TOKEN",
 			"lib.version"    => \Clever::VERSION,
 			"lib.apibase"    => \Clever::$apiBase,
+			"lib.token"      => $this->token,
+			"lib.retries"    => $this->retries,
+			"lib.interval"   => $this->interval,
 			"call.timestamp" => date("c (e)"),
 		];
 
