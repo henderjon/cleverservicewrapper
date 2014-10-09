@@ -285,15 +285,19 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable {
 	// const CONTACTS = "contacts";
 
 	function __toString(){
-		return json_encode($this->jsonSerialize());
+		return json_encode($this->toArray());
 	}
 
 	function serialize(){
-		return serialize($this->__debugInfo());
+		return serialize($this->toArray());
 	}
 
 	function unserialize($serialized){
 		//noop
+	}
+
+	function toArray(){
+		return $this->jsonSerialize();
 	}
 
 	function jsonSerialize(){
