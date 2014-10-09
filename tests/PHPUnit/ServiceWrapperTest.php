@@ -22,14 +22,14 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test___toString(){
-		$info = [
+		$info = array(
 			"lib.retries"    => 100,
 			"lib.interval"   => 1,
 			"lib.token"      => "DEMO_TOKEN",
 			"lib.version"    => \Clever::VERSION,
 			"lib.apibase"    => \Clever::$apiBase,
 			"call.timestamp" => date("c (e)"),
-		];
+		);
 
 		$inst = $this->getService();
 		$result = (string)$inst;
