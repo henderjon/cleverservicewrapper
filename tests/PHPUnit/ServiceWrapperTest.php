@@ -137,9 +137,9 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$info = [
 			"lib.version"    => \Clever::VERSION,
 			"lib.apibase"    => \Clever::$apiBase,
-			"lib.token"      => $this->token,
-			"lib.retries"    => $this->retries,
-			"lib.interval"   => $this->interval,
+			"lib.token"      => "DEMO_TOKEN",
+			"lib.retries"    => 100,
+			"lib.interval"   => 1,
 			"call.timestamp" => date("c (e)"),
 		];
 
