@@ -306,11 +306,11 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable {
 
 	function __debugInfo(){
 		return array(
-			"lib.retries"    => $this->retries,
-			"lib.interval"   => $this->interval,
-			"lib.token"      => $this->token,
 			"lib.version"    => \Clever::VERSION,
 			"lib.apibase"    => \Clever::$apiBase,
+			"lib.token"      => $this->token,
+			"lib.retries"    => $this->retries,
+			"lib.interval"   => $this->interval,
 			"call.timestamp" => date("c (e)"),
 		);
 	}
