@@ -304,11 +304,11 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 
 	function __debugInfo(){
 		return [
-			"lib.retries"    => $this->retries,
-			"lib.interval"   => $this->interval,
-			"lib.token"      => $this->token,
 			"lib.version"    => \Clever::VERSION,
 			"lib.apibase"    => \Clever::$apiBase,
+			"lib.token"      => $this->token,
+			"lib.retries"    => $this->retries,
+			"lib.interval"   => $this->interval,
 			"call.timestamp" => date("c (e)"),
 		];
 	}
