@@ -21,6 +21,26 @@ class ServiceWrapperTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf("\\Clever\\ServiceWrapperInterface", $inst);
 	}
 
+	function test___toString(){
+		$info = [
+			"lib.retries"    => 100,
+			"lib.interval"   => 1,
+			"lib.token"      => "DEMO_TOKEN",
+			"lib.version"    => \Clever::VERSION,
+			"lib.apibase"    => \Clever::$apiBase,
+			"call.timestamp" => date("c (e)"),
+		];
+
+		$inst = $this->getService();
+		$result = (string)$inst;
+		$expected = json_encode($info);
+		$this->assertEquals(json_encode($info), $result);
+
+		$result = serialize($inst);
+		$expected = 'C:21:"Clever\ServiceWrapper":235:{'.serialize($info).'}';
+		$this->assertEquals($expected, $result);
+	}
+
 	function test_getCleverDistrict(){
 		$inst = $this->getService();
 

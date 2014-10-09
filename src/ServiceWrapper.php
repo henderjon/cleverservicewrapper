@@ -2,7 +2,7 @@
 
 namespace Clever;
 
-class ServiceWrapper implements ServiceWrapperInterface {
+class ServiceWrapper implements ServiceWrapperInterface, \Serializable {
 
 	protected $logger;
 
@@ -283,5 +283,32 @@ class ServiceWrapper implements ServiceWrapperInterface {
 	 * CURRENTLY NOT AN OBJECT IN CLEVER-PHP
 	 */
 	// const CONTACTS = "contacts";
+
+	function __toString(){
+		return json_encode($this->jsonSerialize());
+	}
+
+	function serialize(){
+		return serialize($this->__debugInfo());
+	}
+
+	function unserialize($serialized){
+		//noop
+	}
+
+	function jsonSerialize(){
+		return $this->__debugInfo();
+	}
+
+	function __debugInfo(){
+		return [
+			"lib.retries"    => $this->retries,
+			"lib.interval"   => $this->interval,
+			"lib.token"      => $this->token,
+			"lib.version"    => \Clever::VERSION,
+			"lib.apibase"    => \Clever::$apiBase,
+			"call.timestamp" => date("c (e)"),
+		];
+	}
 
 }
