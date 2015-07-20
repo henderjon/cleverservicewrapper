@@ -192,9 +192,9 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 	 * get a generic CleverObject for testing, __GET, __SET lets us use
 	 * this as a mock if we want.
 	 */
-	function getCleverObject(){
-		return new \CleverObject;
-		// return \CleverEvent::retrieve($id);
+	function getCleverObject($type = null){
+		return $type ? new $type : new \CleverObject;
+		// return \::retrieve($id);
 	}
 
 	/**
@@ -217,6 +217,11 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 	function setRetries($retries){
 		$this->retries = $retries;
 	}
+
+	/**
+	 * constant naming an endpoint of the Clever API
+	 */
+	const ALL = "all";
 
 	/**
 	 * constant naming an endpoint of the Clever API
