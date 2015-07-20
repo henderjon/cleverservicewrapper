@@ -192,8 +192,12 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 	 * get a generic CleverObject for testing, __GET, __SET lets us use
 	 * this as a mock if we want.
 	 */
-	function getCleverObject($type = null){
-		return $type ? new $type : new \CleverObject;
+	function getCleverObject($type = null, array $values = []){
+		if($type && $values){
+			return call_user_func_array([$type, "constructFrom"], $values);
+		}else{
+			return $type ? new $type : new \CleverObject;
+		}
 		// return \::retrieve($id);
 	}
 
