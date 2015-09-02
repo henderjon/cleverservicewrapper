@@ -18,17 +18,17 @@ class CleverDistrict {
 		return $this->service->get($endpoint, $params);
 	}
 
-	function teachers(){
+	function teachers(array $params = []){
 		$endpoint = "districts/{$this->id}/teachers";
 		return $this->service->get($endpoint, $params);
 	}
 
-	function students(){
+	function students(array $params = []){
 		$endpoint = "districts/{$this->id}/students";
 		return $this->service->get($endpoint, $params);
 	}
 
-	function sections(){
+	function sections(array $params = []){
 		$endpoint = "districts/{$this->id}/sections";
 		return $this->service->get($endpoint, $params);
 	}
