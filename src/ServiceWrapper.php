@@ -183,7 +183,7 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 	 * get the CleverEvent object for that ID. Using "refresh" allows initial object
 	 * calls to pass through ping.
 	 */
-	function getCleverEvent($id){
+	function getCleverEvent($id = null){
 		return $this->ping(new \CleverEvent($id), "refresh");
 		// return \CleverEvent::retrieve($id);
 	}
