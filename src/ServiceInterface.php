@@ -2,7 +2,7 @@
 
 namespace Clever;
 
-interface ServiceWrapperInterface {
+interface ServiceInterface {
 
 	/**
 	 *

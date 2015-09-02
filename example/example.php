@@ -1,20 +1,15 @@
 <?php
 
+namespace Clever;
+
 require "vendor/autoload.php";
 
-$clever   = new \Clever\ServiceWrapper("DEMO_TOKEN", new \Clever\ServiceLogger);
-$district = $clever->getCleverDistrict("4fd43cc56d11340000000005"); // mess with this value to see the output
+$request = new Request;
+$request->setAuthorization("DEMO_TOKENZ");
 
-if(!$district){
-	exit(1);
-}
+$service = new Service($request, new ServiceLogger);
 
-$params["limit"] = 2;
-while( $schools = $clever( $district, $clever::SCHOOLS, $params ) ) {
-	foreach($schools as $school){
-		$params["starting_after"] = $school->id;
-		echo "{$school->id} -> {$school->name}\n";
-	}
-}
+$D = new CleverDistrict($service, "4fd43cc56d11340000000005");
 
-exit(0);
+drop($D->schools());
+
