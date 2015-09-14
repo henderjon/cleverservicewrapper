@@ -194,7 +194,7 @@ class ServiceWrapper implements ServiceWrapperInterface, \Serializable, \JsonSer
 	 */
 	function getCleverObject($type = null, array $values = []){
 		if($type && $values){
-			return call_user_func_array([$type, "constructFrom"], $values);
+			return call_user_func([$type, "constructFrom"], $values);
 		}else{
 			return $type ? new $type : new \CleverObject;
 		}
